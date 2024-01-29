@@ -1,16 +1,15 @@
 package com.example.paymentservice.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class DelegationFromRidesRequest {
 
+    private Integer rideId;
     private Integer driverId;
     private Integer passId;
     private Float cost;

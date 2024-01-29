@@ -1,0 +1,53 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: payment-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: 12345
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/paymentdb
+  jpa:
+    database: postgresql
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+  kafka:
+    consumer:
+      properties:
+        spring.json:
+          trusted.packages: "*"
+          type.mapping: paymentDelegation:com.example.paymentservice.dto.DelegationFromRidesRequest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      bootstrap-servers: localhost:9092
+      group-id: paymentGroup
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      bootstrap-servers: localhost:9092
+topic:
+  name:
+    ride: payment-delegate
+kafka:
+  partitions:
+    count: 5
+  replicas:
+    count: 1
+feign:
+  client:
+    driver:
+      name: DRIVER-SERVICE
+      url: http://localhost:8085
+      path: /api/v1/driver
+    passenger:
+      name: PASSENGER-SERVICE
+      url: http://localhost:8082
+      path: /api/v1/passenger
+

@@ -2,10 +2,14 @@ package com.example.paymentservice.service;
 
 import com.example.paymentservice.convert.PaymentTransactionDTOConverter;
 import com.example.paymentservice.dao.PaymentDAO;
-import com.example.paymentservice.dto.PaymentTransactionDTO;
+import com.example.paymentservice.dto.DelegationFromRidesRequest;
 import com.example.paymentservice.exception.TransactionNotFoundException;
+import com.example.paymentservice.feign.DriverFeignInterface;
+import com.example.paymentservice.feign.PassengerFeignInterface;
+import com.example.paymentservice.model.BankCard;
 import com.example.paymentservice.model.PaymentTransaction;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,18 +18,34 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
+@AllArgsConstructor
 public class PaymentService {
 
-    @Autowired
-    PaymentDAO paymentDAO;
-    @Autowired
-    PaymentTransactionDTOConverter paymentTransactionDTOConverter;
+    final PaymentDAO paymentDAO;
+    private final PaymentTransactionDTOConverter paymentTransactionDTOConverter;
+    final PassengerFeignInterface passengerFeignInterface;
+    final DriverFeignInterface driverFeignInterface;
 
-    public ResponseEntity<PaymentTransaction> makePayment(PaymentTransactionDTO paymentDTO) {
-        //imitate transaction from passenger's card to driver's card
-        PaymentTransaction payment = paymentTransactionDTOConverter.convertPaymentTransactionDTOToPaymentTransaction(paymentDTO);
-        paymentDAO.save(payment);
-        return new ResponseEntity<>(payment, HttpStatus.OK);
+    public void makePayment(DelegationFromRidesRequest request) {
+        BankCard passengerCard = passengerFeignInterface.getBankData(request.getPassId()).getBody();
+        BankCard driverCard = driverFeignInterface.getBankData(request.getDriverId()).getBody();
+        remittance(passengerCard, driverCard, request.getCost());
+        PaymentTransaction transaction = PaymentTransaction
+                .builder()
+                .rideId(request.getRideId())
+                .driverId(request.getDriverId())
+                .passengerId(request.getPassId())
+                .amount(request.getCost())
+                .successful(true)
+                .build();
+        paymentDAO.save(transaction);
+        log.info("Transaction was successful");
+    }
+
+    private void remittance(BankCard passengerCard, BankCard driverCard, Float cost) {
+        passengerCard.setBalance(passengerCard.getBalance()-cost);
+        driverCard.setBalance(driverCard.getBalance()+cost);
     }
 
     public ResponseEntity<List<PaymentTransaction>> getDriverTransactionsById(Integer id) throws TransactionNotFoundException {

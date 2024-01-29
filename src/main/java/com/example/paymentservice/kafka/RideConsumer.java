@@ -14,7 +14,7 @@ public class RideConsumer {
 
     private final PaymentService paymentService;
 
-    @KafkaListener(topics = "payment-delegate", groupId = "paymentGroup")
+    @KafkaListener(topics = "${topic.name.ride}")
     public void receiveMessage(DelegationFromRidesRequest request) {
         log.info("Received message: {}", request.toString());
         paymentService.makePayment(request);

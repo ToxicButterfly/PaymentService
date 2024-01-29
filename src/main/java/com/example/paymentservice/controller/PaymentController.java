@@ -17,10 +17,10 @@ public class PaymentController {
     @Autowired
     PaymentService paymentService;
 
-    @PostMapping("")
-    public ResponseEntity<PaymentTransaction> makePayment(@RequestBody PaymentTransactionDTO payment) {
-        return paymentService.makePayment(payment);
-    }
+//    @PostMapping("")
+//    public ResponseEntity<PaymentTransaction> makePayment(@RequestBody PaymentTransactionDTO payment) {
+//        return paymentService.makePayment(payment);
+//    }
 
     @GetMapping("driver/{id}")
     public ResponseEntity<List<PaymentTransaction>> getDriverTransactionsById(@PathVariable Integer id) throws TransactionNotFoundException {
