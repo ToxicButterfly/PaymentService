@@ -2,7 +2,7 @@ package com.example.paymentservice.dto;
 
 import com.example.paymentservice.model.BankCard;
 
-public class PaymentTransactionDTO {
+public class PaymentTransactionDto {
     private Integer transactionId;
     private Integer rideId;
     private Integer passengerId;
