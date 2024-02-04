@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/payment")
+@RequestMapping("api/v1/payments")
 public class PaymentController {
 
     final PaymentService paymentService;
 
     @GetMapping("driver/{id}")
-    public ResponseEntity<TransactionsDto> getDriverTransactionsById(@PathVariable Integer id) throws TransactionNotFoundException {
+    public ResponseEntity<TransactionsDto> getDriverTransactionsById(@PathVariable Integer id) {
         return ResponseEntity.ok(paymentService.getDriverTransactionsById(id));
     }
 
     @GetMapping("passenger/{id}")
-    public ResponseEntity<TransactionsDto> getPassengerTransactionsById(@PathVariable Integer id) throws TransactionNotFoundException {
+    public ResponseEntity<TransactionsDto> getPassengerTransactionsById(@PathVariable Integer id) {
         return ResponseEntity.ok(paymentService.getPassengerTransactionsById(id));
     }
 }

@@ -6,7 +6,7 @@ import com.example.paymentservice.exception.TransactionNotFoundException;
 
 public interface PaymentService {
     void makePayment(DelegationFromRidesRequest request);
-    TransactionsDto getDriverTransactionsById(Integer id) throws TransactionNotFoundException;
-    TransactionsDto getPassengerTransactionsById(Integer id) throws TransactionNotFoundException;
+    TransactionsDto getDriverTransactionsById(Integer id);
+    TransactionsDto getPassengerTransactionsById(Integer id);
 
 }

@@ -5,12 +5,11 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class DelegationFromRidesRequest {
-
     private Integer rideId;
     private Integer driverId;
     private Integer passId;
     private Float cost;
+
 }
