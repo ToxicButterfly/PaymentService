@@ -17,6 +17,7 @@
         <java.version>17</java.version>
         <modelmapper.version>3.2.0</modelmapper.version>
         <spring-cloud.version>4.1.0</spring-cloud.version>
+        <cucumber.version>7.14.0</cucumber.version>
     </properties>
     <dependencies>
 
@@ -85,6 +86,26 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>${spring-cloud.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+            <version>${cucumber.version}</version>
         </dependency>
 
     </dependencies>

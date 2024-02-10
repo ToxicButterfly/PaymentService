@@ -1,6 +1,5 @@
 package com.example.paymentservice.service.impl;
 
-import com.example.paymentservice.convert.PaymentTransactionDtoConverter;
 import com.example.paymentservice.dto.DelegationFromRidesRequest;
 import com.example.paymentservice.dto.TransactionsDto;
 import com.example.paymentservice.exception.TransactionNotFoundException;
