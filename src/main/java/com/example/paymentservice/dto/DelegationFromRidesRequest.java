@@ -11,5 +11,5 @@ public class DelegationFromRidesRequest {
     private Integer driverId;
     private Integer passId;
     private Float cost;
-
+    private String token;
 }

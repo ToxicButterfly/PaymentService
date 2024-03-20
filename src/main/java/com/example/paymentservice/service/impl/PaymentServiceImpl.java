@@ -12,6 +12,7 @@ import com.example.paymentservice.service.PaymentService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +27,9 @@ public class PaymentServiceImpl implements PaymentService {
     final DriverFeignInterface driverFeignInterface;
 
     public void makePayment(DelegationFromRidesRequest request) {
-        BankCard passengerCard = passengerFeignInterface.getBankData(request.getPassId()).getBody();
-        BankCard driverCard = driverFeignInterface.getBankData(request.getDriverId()).getBody();
+        log.info("Authorization token: " + request.getToken());
+        BankCard passengerCard = passengerFeignInterface.getBankData(request.getPassId(), request.getToken()).getBody();
+        BankCard driverCard = driverFeignInterface.getBankData(request.getDriverId(), request.getToken()).getBody();
         remittance(passengerCard, driverCard, request.getCost());
         PaymentTransaction transaction = PaymentTransaction
                 .builder()
